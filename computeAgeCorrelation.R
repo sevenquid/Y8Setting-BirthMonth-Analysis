@@ -130,8 +130,68 @@ ageCor <- function(gender = "EVERYONE") {  #gender = "M" or "F" or "EVERYONE" (d
                    g2007[, 4])
     colnames(g2007) <- c("UPN", "Name", "Set")
     
-    dfM <- rbind(b2014, b2013, b2012, b2011, b2010, b2009, b2008, b2007)
-    dfF <- rbind(g2014, g2013, g2012, g2011, g2010, g2009, g2008, g2007)
+    b2006 <- read.csv("2006-07 Year 8 Boys.csv", skip = 2, stringsAsFactors = F)
+    b2006 <- b2006[1:101, c(1, 2, 3, 6)]
+    b2006[1:24, 4] <- 1
+    b2006[27:49, 4] <- 1.75
+    b2006[52:73, 4] <- 2.5
+    b2006[78:90, 4] <- 3.25
+    b2006[93:101, 4] <- 4
+    b2006 <- cbind(b2006[, 1],
+                   paste0(b2006[, 2], ", ", b2006[, 3]), 
+                   b2006[, 4])
+    colnames(b2006) <- c("UPN", "Name", "Set")
+    g2006 <- read.csv("2006-07 Year 8 Girls Amended.csv", skip = 1, stringsAsFactors = F)
+    g2006 <- g2006[, c(1, 2, 3)]
+    g2006[1:25, 4] <- 1
+    g2006[29:50, 4] <- 2
+    g2006[53:68, 4] <- 3
+    g2006[71:80, 4] <- 4
+    g2006 <- cbind(g2006[, 1],
+                   paste0(g2006[, 2], ", ", g2006[, 3]), 
+                   g2006[, 4])
+    colnames(g2006) <- c("UPN", "Name", "Set")
+    
+    b2005 <- read.csv("2005-06 Year 8 Boys.csv", skip = 0, stringsAsFactors = F)
+    b2005 <- b2005[, c(1, 2, 3)]
+    b2005 <- cbind(rep("", 82), b2005)
+    b2005 <- cbind(as.character(b2005[, 1]),
+                   paste0(b2005[, 2], ", ", b2005[, 3]), 
+                   b2005[, 4])
+    colnames(b2005) <- c("UPN", "Name", "Set")
+    g2005 <- read.csv("2005-06 Year 8 Girls.csv", skip = 2, stringsAsFactors = F)
+    g2005 <- g2005[, c(8, 1, 2, 7)]
+    g2005[6, 4] <- 1
+    g2005[45, 4] <- 2
+    g2005 <- cbind(as.character(g2005[, 1]),
+                   paste0(g2005[, 2], ", ", g2005[, 3]), 
+                   g2005[, 4])
+    colnames(g2005) <- c("UPN", "Name", "Set")
+    
+    b2004 <- read.csv("2004-05 Yr8.csv", skip = 0, stringsAsFactors = F)
+    b2004 <- bg2004[1:76, 2]
+    b2004 <- cbind(rep("", 76), b2004, rep("", 76))
+    b2004[1:24, 3] <- 1
+    b2004[27:46, 3] <- 2
+    b2004[49:68, 3] <- 3
+    b2004[71:76, 3] <- 4
+    colnames(b2004) <- c("UPN", "Name", "Set")
+    
+    b2003 <- read.csv("2003-04 Y8.csv", skip = 0, stringsAsFactors = F)
+    b2003 <- b2003[1:74, ]
+    b2003 <- cbind(rep("", 74), b2003)
+    b2003 <- cbind(as.character(b2003[, 1]),
+                   paste0(b2003[, 2], ", ", b2003[, 3]), 
+                   b2003[, 4])
+    colnames(b2003) <- c("UPN", "Name", "Set")
+    
+    
+    #b2013, b2006 not included because 5 sets instead of 4
+    #g2004 not included because sets 1, 2A, 2a, 3
+    
+    dfM <- rbind(b2014, b2012, b2011, b2010, b2009, b2008, b2007, b2005, b2004)
+    dfF <- rbind(g2014, g2013, g2012, g2011, g2010, g2009, g2008, g2007, g2006,
+                 g2005)
     dfM <- cbind(dfM, rep("M", nrow(dfM)))
     dfF <- cbind(dfF, rep("F", nrow(dfF)))
     colnames(dfM)[4] <- "GENDER"   
@@ -177,19 +237,19 @@ ageCor <- function(gender = "EVERYONE") {  #gender = "M" or "F" or "EVERYONE" (d
     #prepare base1 for analysis - set 1st Sept as month/week/day 0 of year
     base1$DATE_OF_BIRTH <- as.Date(base1$DATE_OF_BIRTH, format = "%d/%m/%Y")
     #by month
-    base1$DATE_OF_BIRTH <- strftime(base1$DATE_OF_BIRTH, format = "%m")
-    base1$DATE_OF_BIRTH <- (as.numeric(base1$DATE_OF_BIRTH) - 9) %% 12  
+    #base1$DATE_OF_BIRTH <- strftime(base1$DATE_OF_BIRTH, format = "%m")
+    #base1$DATE_OF_BIRTH <- (as.numeric(base1$DATE_OF_BIRTH) - 9) %% 12  
     #by week
     #base1$DATE_OF_BIRTH <- strftime(base1$DATE_OF_BIRTH, format = "%U")
     #base1$DATE_OF_BIRTH <- (as.numeric(base1$DATE_OF_BIRTH) - 35) %% 53  
     #by day
-    #base1$DATE_OF_BIRTH <- strftime(base1$DATE_OF_BIRTH, format = "%j")
-    #base1$DATE_OF_BIRTH <- (as.numeric(base1$DATE_OF_BIRTH) - 244) %% 365  
-                            #244 %% 366 in leap years - not yet catered for
+    base1$DATE_OF_BIRTH <- strftime(base1$DATE_OF_BIRTH, format = "%j")
+    base1$DATE_OF_BIRTH <- (as.numeric(base1$DATE_OF_BIRTH) - 244) %% 365  
+                            #244) %% 366 in leap years - not yet catered for
     
     
-    #carry out and return chi-squared test 
-    #for association between birth month/week/day and Y8 set
+    #calculate spearman's correlation 
+    #between birth month/week/day and Y8 set
     if (gender == "EVERYONE") {
         x <- base1$DATE_OF_BIRTH
         y <- base1$Set
@@ -200,10 +260,37 @@ ageCor <- function(gender = "EVERYONE") {  #gender = "M" or "F" or "EVERYONE" (d
         y <- base1$Set[base1$GENDER == gender]
         n <- length(base1$Set[base1$GENDER == gender])
     }
-    print(n)
     tbl <- table(x, y)
-    #unmatched
-    #print(tbl)
-    chisq.test(tbl)
-    #cor.test(x, y, alternative = "greater", method = "kendall")
+    c(colSums(tbl), cor(x, y, method = "spearman"))
 }
+
+
+siglevel <- function(totals_and_z = c(350, 325, 270, 170, 0.05), n = 1000) {
+    totals <- as.integer(totals_and_z[1:4])
+    z <- totals_and_z[5]
+    rho <- numeric(0)
+    for (i in 1:n) {
+        x <- numeric(0)
+        y <- numeric(0)
+        for (j in 1:sum(totals)) {
+            x <- c(x, sample(0:365, 1))
+        }
+        for (j in 1:4) {
+            y <- c(y, rep.int(j, totals[j]))
+        }
+        rho <- c(rho, cor(x, y, method = "spearman"))
+    }
+    print("rho =")
+    print(z)
+    print("p-value for this rho is:")
+    p <- sum(rho > z) / n
+    print(p)
+    if (p < 0.05) {
+        print("Significant at 5% level. Reject H0: Sufficient evidence that there is
+              positive correlation between birth date and Y8 set.")
+    }
+}
+
+
+#result <- ageCor()
+#siglevel(result, 10000)
