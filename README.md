@@ -1,6 +1,11 @@
-# Y8Setting-BirthMonth-Analysis
-computeAgeCorrelation.R is a script used to test the hypothesis that there is positive correlation between birth date and Year 8 Maths ability set for pupils at "Z School".
+# Is a pupil's Maths set dependent on their date of birth?
+computeAgeCorrelation.R is a script used to test the hypothesis that there is positive correlation between birth date and Year 8 Maths ability set for pupils at "Z School".  
 
+xytable.csv is the final set of x-y pairs used to compute Spearman's Rank Correlation Coefficient.  
+
+contingency.csv is the final contingency table of data, the column sums of which are used to seed siglevel() for it to calculate the significance level of the correlation coefficient.  
+
+**Background and Experiment**
 At "Z school", a real school with a pseudonym for data protection, pupils are placed into an ability set when they enter Year 8 (at the age of 12). There are 4 ability sets: 1, 2, 3 and 4, with 1 being the highest (and largest) and 4 being the lowest (and smallest). The department assigns each pupil to an ability set by the pace of their learning and the amount of classroom support they typically require. Setting is done in the pupils' interest - that they are challenged at a level that suits them. 
 
 Valid data was used from 2004-05 to present day. There was data available going back to 2000-01 but before 2004-05 a different setting structure was used so it wasn't feasible to include those data. For the same reason, boys in 2013-14 and 2006-07, and girls in 2004-05 were excluded; a different setting structure was in place due to unusual cohorts. 
